@@ -1,58 +1,85 @@
 *{
   background-color: rgb(25, 33, 30);
 }
+
 .cards{
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: center;
+  align-items: flex-start;
   flex-wrap: wrap;
+  gap: 70px;
+  min-height: 100vh;
+  padding-top: 15%;
 }
+
+
+@property --angle{
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
 .card1{
-    position: relative;
-    color: white;
-    margin-top: 20%;
-    width: 200px;
-    height: 100px;
-    border:1px solid rgb(31, 190, 190) ;
-    border-radius: 8px;
-    background-color: rgb(27, 27, 39);
-    overflow: visible;
-    transition: width 0.25s ease, height 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-}
-.card2 .card1{
-  display: flex;
-  flex-direction: row;
-}
-.card2{
-    border-color: rgba(255, 47, 175, 0.881);
-  }
-
-.card1:hover{
-    width:220px;
-    height:320px;
-    border-color: var(--border-hover-cyan);
-    box-shadow: 0px 0px 24px rgb(31, 190, 190);
+  position: relative;
+  color: white;
+  width: 220px;
+  border-radius: 7px;
+  border-width: 12px;
+  padding: 65px 18px 20px;
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+  transition: width 0.35s ease, padding 0.35s ease;
 }
 
-.card2:hover{
-  box-shadow: 0px 0px 30px  rgba(236, 23, 154, 0.753);
+.card1::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+  background: conic-gradient(from var(--angle), #22e6e6, #ff2bb0, #22e6e6);
+ -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+            pointer-events: none;
+  animation: borderSpin 3s linear infinite;
 }
 
+@keyframes borderSpin{
+  to{ --angle: 360deg; }
+}
+
+.card1:hover,
+.card1.force-open{
+  width: 260px;
+  padding: 95px 20px 24px;
+}
 
 .card_photo{
   position: absolute;
-  top: 0;
-  left: 45%;
-  transform: translate(-50%,-50%);
+  top: -55px;
+  left: 50%;
+  transform: translateX(-50%);
   width: 100px;
   height: 100px;
   overflow: hidden;
-  border-radius: 10px;
-  border: 2px solid rgb(31, 190, 190) ;
   z-index: 2;
+  transition: width 0.35s ease, height 0.35s ease, top 0.35s ease;
 }
-.card2 .card_photo{
-  border:2px solid  rgba(239, 42, 163, 0.811);
+
+.card_photo::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 2px;
+  background: conic-gradient(from var(--angle), #22e6e6, #ff2bb0, #22e6e6);
+ -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;  z-index: 3;
+  animation: borderSpin 3s linear infinite;
 }
 
 .card_photo img{
@@ -62,110 +89,152 @@
   display: block;
 }
 
-.card_cont{
-  background-color: rgb(27, 27, 39) ;
-  position: absolute;
-  border-radius: 8px;
-  top: 100px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 16px 14px 14px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.2s ease;
-}
-
-.card1:hover .card_cont{
-  opacity: 1;
-  visibility: visible;
+.card1:hover .card_photo,
+.card1.force-open .card_photo{
+  width: 140px;
+  height: 140px;
+  top: -92px;
 }
 
 .card_name{
-    margin:6px 0 2px;
-    font-size:15px;
-    font-weight:600;
-    color: rgb(102, 208, 208);
-}
-.card2 .card_name{
-  color:rgba(223, 16, 144, 0.893) ;
+  margin: 0 0 2px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #35e8e8;
 }
 
 .card_role{
-    margin:6p0x 0px 2px;
-    font-size:11px;
-    font-weight:600;
-    color: rgb(102, 208, 208);
-}
-.card2 .role{
-  color:rgba(223, 16, 144, 0.893) ;
+  margin: 0;
+  font-size: 12px;
+  font-weight: 500;
+  color: #b7b7b7;
 }
 
+.card_extra{
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  margin-top: 0;
+  transition: max-height 0.4s ease, opacity 0.35s ease, margin-top 0.35s ease;
+}
+
+.card1:hover .card_extra,
+.card1.force-open .card_extra{
+  max-height: 260px;
+  opacity: 1;
+  margin-top: 14px;
+}
 
 .card_status{
-    display:flex;
-    gap:18px;
-    margin-bottom:16px;
-  }
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 16px;
+}
 .card_stat{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.card_stat_value{
+  font-size: 14px;
+  font-weight: 700;
+  color: white;
+}
+.label{
+  font-size: 10px;
+  color: #999;
+  margin-top: 2px;
+}
 
-  .card_stat_value{
-    font-size:13px;
-    font-weight:600;
-    color:var(--text-primary);
-  }
+.card_buttons{
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+.card__btn{
+  flex: 1;
+  padding: 8px 0;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+}
+.card__btn--follow{
+  background: #35e8e8;
+  color: #00181c;
+}
+.card__btn--message{
+  background: white;
+  color: black;
+}
 
-  .label{
-    font-size:10px;
-    color:var(--text-muted);
-    margin-top:2px;
-  }
-
-
-
-  .card_buttons{
-    display:flex;
-    gap:8px;
-    width:100%;
-  }
-  .card__btn{
-    flex:1;
-    padding:7px 0;
-    border-radius:5px;
-    font-size:12px;
-    font-weight:600;
-    border:1px solid transparent;
-    cursor:pointer;
-  }
-
-  .card__btn--follow{
-    background: rgb(102, 208, 208);
-    color:#00181c;
-  }
-
-  .card2 .card__btn--follow{
-    background: rgba(214, 9, 135, 0.893);
-    color:#1a0010;
-  }
-
-  .card__btn--message{
-    background:white;
-    border-color: white;
-    color:black;
-  }
-
-
-
-
-
-
-
-
+/* ----- chat panel ----- */
+.chatbox{
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+}
+.chatbox_header{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.chatbox_avatar{
+  width: 24px;
+  height: 24px;
+  border-radius: 0;
+  object-fit: cover;
+}
+.chatbox_name{
+  flex: 1;
+  font-size: 13px;
+  font-weight: 700;
+  color: white;
+}
+.chatbox_close{
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+.chatbox_bubble{
+  align-self: flex-start;
+  background: rgb(35, 35, 44);
+  border: 1px solid #35e8e8;
+  color: #eee;
+  font-size: 12px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  max-width: 90%;
+}
+.chatbox_inputrow{
+  display: flex;
+  gap: 6px;
+  margin-top: auto;
+}
+.chatbox_input{
+  flex: 1;
+  padding: 7px 10px;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background: #111;
+  color: white;
+  font-size: 11px;
+  outline: none;
+}
+.chatbox_send{
+  padding: 7px 12px;
+  border-radius: 6px;
+  background: #35e8e8;
+  color: #00181c;
+  border: none;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
